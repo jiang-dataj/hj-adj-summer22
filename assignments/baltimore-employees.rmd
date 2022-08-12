@@ -1,0 +1,111 @@
+---
+title: "Baltimore City Employees' Salaries"
+output: 
+html_notebook: default
+---
+
+1. Load the necessary package(s)
+```{r}
+library(tidyverse)
+```
+
+2. Load the data into a variable called "employees"
+```{r}
+employees <- read_csv("data/baltimore-city-employee-salaries.csv")
+```
+# Error: 'data/baltimore-city-employee-salaries.csv' does not exist in current working directory ('/Users/hannahjiang/Documents/github/hj-adj-summer22/assignments').
+
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath("/Users/hannahjiang/Documents/github/hj-adj-summer22"))
+```
+```{r}
+employees <- read_csv("data/baltimore-city-employee-salaries.csv")
+```
+
+
+## INTEGRITY CHECKS
+
+Is any individual in here twice? Can you figure out why?
+```{r}
+employees %>% group_by(Name) %>% count() %>% arrange(desc(n));
+employees %>% filter(Name == "Thomas,Stacey") %>% group_by(JobTitle) %>% count();
+employees %>% filter(Name == "Carter,Angela") %>% group_by(JobTitle) %>% count();
+employees %>% filter(Name == "Clark,Tony C") %>% group_by(JobTitle) %>% count();
+employees %>% group_by(FiscalYear) %>% count()
+```
+# 1. They are different individuals with the same names; 2. the data was from 10 different fiscal years.
+
+How many years of data do we have?
+```{r}
+employees %>% group_by(FiscalYear) %>% count()
+```
+
+What are the min and max annual salary given out in 2020? 
+```{r}
+employees %>% filter(FiscalYear == "FY2020") %>% arrange(desc(AnnualSalary));
+employees %>% filter(FiscalYear == "FY2020") %>% arrange(AnnualSalary) %>% filter(AnnualSalary != 0) %>% arrange(AnnualSalary)
+```
+
+Which jobs get paid $0?
+```{r}
+employees %>% filter(AnnualSalary == 0) %>% group_by(JobTitle) %>% count()
+```
+
+How clean are the job titles? Are there a lot of duplicates? 
+```{r}
+employees %>% group_by(JobTitle) %>% count()
+```
+
+Clean up the JobTitles by making everything lowercase
+(hint: use the mutate() function to overwrite the current JobTitle field, using the function str_to_lower())
+```{r}
+employees <- employees %>% mutate(JobTitle_Cleaned = str_to_lower(JobTitle))
+```
+
+Take a look at agency names; how clean are they? 
+```{r}
+employees %>% group_by(AgencyName) %>% count()
+```
+
+## QUESTIONS OF THE DATA
+
+Who's the highest paid employee in FY2020?
+```{r}
+employees %>% filter(FiscalYear == "FY2020") %>% arrange(desc(GrossPay))
+```
+
+
+Which agency has the highest average salary in 2020? 
+```{r}
+employees %>%
+  filter(FiscalYear == "FY2020") %>%
+  group_by(AgencyName) %>%
+  summarise(agency_avg_salary = mean(AnnualSalary)) %>% 
+  arrange(desc(agency_avg_salary))
+```
+
+How many people work in the police department in 2020? 
+```{r}
+employees %>%
+  filter(FiscalYear == "FY2020") %>% 
+  filter(grepl("Police", AgencyName)) %>% 
+  group_by(Name) %>% 
+  count() %>% 
+  arrange(desc(n));
+employees %>% 
+  filter(Name == "Pawley,Harry A")
+```
+# It seems that the two "Pawley,Harry A"s are different people. So the answer would be 3208 rows plus 1 = 3209.
+
+How many are "police officers"?
+```{r}
+employees %>%
+  filter(FiscalYear == "FY2020" & JobTitle_Cleaned == "police officer")
+```
+
+What is the police officers' total salary? Average salary?
+```{r}
+employees %>% 
+  filter(FiscalYear == "FY2020" & JobTitle_Cleaned == "police officer") %>% 
+  summarise(plof_tot_salary_2020 = sum(AnnualSalary), plof_avg_salary_2020 = mean(AnnualSalary))
+```
