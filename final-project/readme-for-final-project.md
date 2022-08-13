@@ -12,4 +12,4 @@
 
 * **Source:** https://doc.mo.gov/media-center/sunshine-law
 
-* **Used file:** SunshineLawFak930 *(Note: the original file was too big to be uploaded, so a compressed version was uploaded instead)*
+* **Used file:** SunshineLawFak930 *(Note: the original file was too big to be uploaded, so a compressed version was uploaded instead; the original file has no extension)*
