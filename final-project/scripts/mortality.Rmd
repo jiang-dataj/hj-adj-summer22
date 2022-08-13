@@ -1,0 +1,32 @@
+---
+title: "Mortality in State and Federal Prisons, 2001–2019"
+output: 
+html_notebook: default
+---
+
+# Install library
+```{r}
+library(tidyverse)
+```
+
+# Set up working directory
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath("/Users/hannahjiang/Documents/github/hj-adj-summer22/final-project"))
+```
+
+# Import, modify and clean up data
+```{r}
+msfp_full_ver <- read_csv("data/msfp0119stt16.csv");
+mortality <- msfp_full_ver[c(11,14:63), c(2:13)];
+
+names(mortality) <- c("State", "All causes", "Heart disease", "Cancer", "Liver disease", "AIDS-related", "Respiratory disease", "All other illnesses", "Suicide", "Drug/alcohol intoxication", "Accident", "Homicide");
+mortality <- mortality[-c(1), ];
+
+mortality[mortality == "Alaska/g"] <- "Alaska";
+mortality[mortality == "Connecticut/h"] <- "Connecticut";
+mortality[mortality == "Delaware/h"] <- "Delaware";
+mortality[mortality == "Hawaii/h"] <- "Hawaii";
+mortality[mortality == "Rhode Island/h"] <- "Rhode Island";
+mortality[mortality == "Vermont/h"] <- "Vermont"
+```
+
