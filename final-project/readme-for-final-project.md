@@ -26,7 +26,7 @@
 
     -   **Used file:** assaults_2009.xls; datadictionary_assaults.pdf
 
-    -   **Update:** cleaned
+    -   **Update:** partially cleaned
 
 ### 3. Project folder memo
 
