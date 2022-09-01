@@ -19,7 +19,7 @@ knitr::opts_knit$set(root.dir = normalizePath("/Users/hannahjiang/Documents/gith
 msfp_original <- read_csv("data/msfp0119stt16.csv");
 mortality <- msfp_original[c(11,14:63), c(2:13)];
 
-names(mortality) <- c("State", "All causes", "Heart disease", "Cancer", "Liver disease", "AIDS-related", "Respiratory disease", "All other illnesses", "Suicide", "Drug/alcohol intoxication", "Accident", "Homicide");
+names(mortality) <- c("State", "All_causes", "Heart_disease", "Cancer", "Liver_disease", "AIDS_related", "Respiratory_disease", "All_other_illnesses", "Suicide", "Drug_alcohol_intoxication", "Accident", "Homicide");
 mortality <- mortality[-c(1), ];
 
 mortality[mortality == "Alaska/g"] <- "Alaska";
@@ -28,6 +28,13 @@ mortality[mortality == "Delaware/h"] <- "Delaware";
 mortality[mortality == "Hawaii/h"] <- "Hawaii";
 mortality[mortality == "Rhode Island/h"] <- "Rhode Island";
 mortality[mortality == "Vermont/h"] <- "Vermont"
+
+replaceCommas<-function(x){
+  x<-as.numeric(gsub("\\,", "", x))
+}
+
 ```
+
+# I can't sort it out. The reference most relevant to my situation that I found: https://stackoverflow.com/questions/49910861/removing-comma-from-numbers-in-r
 
 

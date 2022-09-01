@@ -1,0 +1,42 @@
+---
+title: "safety"
+output: 
+html_notebook: default
+---
+
+# Install library
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+# Set up working directory
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath("/Users/hannahjiang/Documents/github/hj-adj-summer22/final-project"))
+```
+
+# Import data
+```{r}
+safety_original <- readxl::read_xls("data/assaults_2009.xls")
+```
+
+# Modify and clean up data - Institutional Security Level
+```{r}
+safety <- safety_original %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "010101", replacement = "BOP ALL"));
+safety <- safety %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "070101", replacement = "Minimum"));
+safety <- safety %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "070202", replacement = "Low"));
+safety <- safety %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "070303", replacement = "Medium"));
+safety <- safety %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "070404", replacement = "High"));
+safety <- safety %>% 
+  mutate(todcode = str_replace_all(todcode, pattern = "070505", replacement = "Admin"))
+```
+
+# Modify and clean up data - Year & Month
+```{r}
+safety <- mutate(safety, new_yrmo = ym(yrmo))
+```
